@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.2"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
     <flow name="myfirstappFlow1" doc:name="myfirstappFlow1">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="santosh" doc:name="HTTP"/>
         <echo-component doc:name="Echo"/>
+        <set-payload value="#[message.inboundProperties[&quot;number&quot;]]" doc:name="Set Payload"/>
+        <choice doc:name="Choice">
+            <when expression="#[message.payload == 1]">
+                <set-payload value="&quot;The payload is 1&quot;" doc:name="Set Payload"/>
+            </when>
+            <otherwise>
+                <set-payload value="&quot;The payload is not 1&quot;" doc:name="Set Payload"/>
+            </otherwise>
+        </choice>
     </flow>
 </mule>
